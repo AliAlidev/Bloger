@@ -21,8 +21,8 @@
                         <li><a href="/user/{{ session('userid') }}/edit">{{ session('username') }}</a></li>
                         <li><a href="/signout">Sign out</a></li>
                     @else
-                        <li><a href="register">Signup</a></li>
-                        <li><a href="login">Login</a></li>
+                        <li><a href="/register">Signup</a></li>
+                        <li><a href="/login">Login</a></li>
                     @endif
                     <li><a href="/">Home</a></li>
                     <li><a href="/user">Show Users</a></li>
