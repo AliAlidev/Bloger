@@ -11,6 +11,9 @@
                 <form action="/register" method="POST" role="form" id="register-form">
                     @csrf
                     <div class="form-group">
+                        <input type="file" class="form-control" name="image" id="exampleInputName1">
+                    </div>
+                    <div class="form-group">
                         <input type="text" class="form-control" name="fullName" id="exampleInputName1"
                             placeholder="Full Name">
                     </div>
@@ -37,22 +40,28 @@
                             placeholder="Re-Password">
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" name="address" id="exampleInputName1"
-                            placeholder="address">
+                        <input type="text" class="form-control" name="address" id="exampleInputName1" placeholder="address">
                     </div>
                     <div class="checkbox form-group">
                         <label>
                             <input type="checkbox" name="agreeConditions"> I agree with all terms and conditions.
                         </label>
                     </div>
-                    <button type="submit" class="btn btn-default">SignUp</button>&nbsp;
-                    <button type="reset" class="btn btn-default">Reset</button>
-                </form>
-                @if (session('status'))
-                    <div class="alert alert-danger">
-                        {{ session('status') }}
+                    <div>
+                        <button type="submit" class="btn btn-default">SignUp</button>&nbsp;
+                        <button type="reset" class="btn btn-default">Reset</button>
                     </div>
-                @endif
+
+                    <div style="float:left; padding-top: 10px">
+                        @if ($errors->any)
+                            @foreach ($errors->all() as $error)
+                                <li>
+                                    {{ $error }}
+                                </li>
+                            @endforeach
+                        @endif
+                    </div>
+                </form>
             </div>
         </div>
     </div>

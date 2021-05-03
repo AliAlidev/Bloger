@@ -21,7 +21,8 @@ class User extends Authenticatable
         'email',
         'password',
         'gender',
-        'address'
+        'address',
+        // 'img'
     ];
 
     /**
@@ -42,4 +43,16 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // mutator incrypt password attribute
+    public function setpasswordAttribute($pass)
+    {
+        $this->attributes['password'] = bcrypt($pass);
+    }
+
+    // accessor capitalize first letter in name
+    public function getNameAttribute($name){
+        return 'my name is: '. ucfirst($name);
+    }
+
 }

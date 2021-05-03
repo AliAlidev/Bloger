@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 
 // home routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/showitem/{id}',[HomeController::class,'showItem']);
 
 // login routes
 Route::get('/login', [LoginController::class, 'index']);

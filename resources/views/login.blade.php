@@ -24,11 +24,15 @@
                     </div>
                     <button type="submit" class="btn btn-default">Login</button>
                 </form>
-                @if (session('status'))
-                    <div class="alert alert-danger">
-                        {{ session('status') }}
-                    </div>
-                @endif
+                <div style="float:left; padding-top: 10px">
+                    @if ($errors->any)
+                        @foreach ($errors->all() as $error)
+                            <li>
+                                {{ $error }}
+                            </li>
+                        @endforeach
+                    @endif
+                </div>
             </div>
         </div>
     </div>

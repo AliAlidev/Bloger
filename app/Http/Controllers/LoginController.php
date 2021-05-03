@@ -4,13 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\slider;
+use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
 
     public function index()
     {
-        return view('login');
+        $sliderData = slider::all();
+        return view('login', ['slider_data' => $sliderData]);
     }
 
     public function SignOut()
@@ -21,16 +24,18 @@ class LoginController extends Controller
 
     public function LogIn(Request $request)
     {
-        if (is_null($request->userName))
-            return back()->with('status', 'you should enter user name');
-        if (is_null($request->password))
-            return back()->with('status', 'you should enter password');
+        $request->validate([
+            'userName' => 'required',
+            'password' => 'required'
+        ]);
 
-        $user = User::where('name', $request->userName)->where('password', hash('sha256', $request->password))->first();
+        $user = User::where('name', $request->userName)->where('password', hash( 'sha256',$request->password))->first();
+       
         if (!is_null($user)) {
             session(['username' => $request->userName, 'userid' => $user->id]);
             return redirect('/');
         } else
-            return back()->with('status', 'user not found try another one');
+            return back()->withErrors('user not found try another one');
+        // throw ValidationException::withMessages(['user not found try another one']);
     }
 }

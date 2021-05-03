@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use App\Http\Requests\CreateValidationRequest;
+use Exception;
 
 use function PHPUnit\Framework\isNull;
 
@@ -36,50 +38,24 @@ class RegisterController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateValidationRequest $request)
     {
-        if (is_null($request->fullName))
-            return back()->with('status', 'please enter full name');
-        if (is_null($request->gender))
-            return back()->with('status', 'you should select gender');
-        if (is_null($request->password))
-            return back()->with('status', 'please enter password');
-        if ($request->password != $request->confirmPassword)
-            return back()->with('status', 'password confirmaion error');
-        if (!$request->agreeConditions)
-            return back()->with('status', 'you should agree conditions before you signup');
+        // $request->validate([
+        //     'fullName'=>'required|string|max:40',
+        //     'gender' => 'required|string',
+        //     'email' => 'required|email|unique:users'
+        // ]);
+        $request->validated();
 
-        $fullName = $request->fullName;
-        $gender = $request->male ? 'male' : 'female';
-        $email = $request->email;
-        $password = hash("sha256", $request->password);
-        $address = $request->address;
-
-        // check duplication
-        $user = User::where('email', $email)->count();
-        if ($user > 0)
-            return back()->with('status', 'you should try another email address because it is already taken');
-
-        //there is two method to insert into dataase
-        // first method:
-
-        // $user = new User;
-        // $user->name = $fullName;
-        // $user->gender = $gender;
-        // $user->email = $email;
-        // $user->password = $password;
-        // $user->save();
-
-        // second method
         $user = User::create([
-            'name' => $fullName,
-            'gender' => $gender,
-            'email' => $email,
-            'address' => $address,
-            'password' => $password
+            'name' => $request->fullName,
+            'gender' => $request->gender,
+            'email' => $request->email,
+            'address' => $request->address,
+            'password' => $request->password,
         ]);
 
-        session(['username' => $fullName, 'userid' => $user->id]);
+        session(['username' => $request->fullName, 'userid' => $user->id]);
         return Redirect::route('home');
     }
 
@@ -92,6 +68,7 @@ class RegisterController extends Controller
     public function show($id)
     {
         //
+        dd(User::pluck('name'));
     }
 
     /**

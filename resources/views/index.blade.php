@@ -1,48 +1,36 @@
 @extends('Layouts.app')
 
 @section('content')
+@include('Layouts.slider')
     <!-- after banner -->
     <div class="after-banner">
         <div class="container">
-            <div class="row">
-                <div class="col-md-4 col-sm-4">
-                    <!-- after banner item -->
-                    <div class="ab-item">
-                        <!-- heading -->
-                        <h3>Focus on Systems</h3>
-                        <!-- paragraph -->
-                        <p>While our prices are competitive, it's the value that's unmatched.</p>
-                        <br>
-                        <a href="#">Read More</a>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-4">
-                    <!-- after banner item -->
-                    <div class="ab-item">
-                        <!-- heading -->
-                        <h3>Plan of Action</h3>
-                        <!-- paragraph -->
-                        <p>While our prices are competitive, it's the value that's unmatched.</p>
-                        <br>
-                        <a href="#">Read More</a>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-4">
-                    <!-- after banner item -->
-                    <div class="ab-item">
-                        <!-- heading -->
-                        <h3>Quality Compliance</h3>
-                        <!-- paragraph -->
-                        <p>While our prices are competitive, it's the value that's unmatched.</p>
-                        <br>
-                        <a href="#">Read More</a>
-                    </div>
-                </div>
+            <div class="default-heading">
+                <!-- heading -->
+                <h2>Our Goals</h2>
             </div>
+            <div class="row">
+                @foreach ($goals_data as $item)
+                    <div class="col-md-4 col-sm-4">
+                        <!-- after banner item -->
+                        <div class="ab-item">
+                            <!-- heading -->
+                            <h3>{{ $item->title }}</h3>
+                            <!-- paragraph -->
+                            <p>{{ $item->description }}</p>
+                            <br>
+                            <a href="/showitem/{{ $item->id }}">Read More</a>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+        <div style="float: left; padding-left: 190px; padding-top: 20px;">
+            {{ $goals_data->links() }}
         </div>
     </div>
     <!-- after banner end-->
-
+    <br>
     <!-- events -->
     <div class="event" id="event">
         <div class="container">
@@ -51,54 +39,30 @@
                 <h2>Upcoming events</h2>
             </div>
             <div class="row">
-                <div class="col-md-4 col-sm-4">
-                    <!-- event item -->
-                    <div class="event-item">
-                        <!-- image -->
-                        <img class="img-responsive" src="img/event/1.jpg" alt="Events" />
-                        <!-- heading -->
-                        <h4><a href="#">Rihanna, Eminem on stage</a></h4>
-                        <!-- sub text -->
-                        <span class="sub-text">Integrating technology and software solutions.</span>
-                        <!-- paragraph -->
-                        <p>It is our belief that in order to be most efficient it requires adaptive technology and
-                            software solutions.</p>
+                @foreach ($events as $event)
+                    <div class="col-md-4 col-sm-4">
+                        <!-- event item -->
+                        <div class="event-item">
+                            <!-- image -->
+                            <img class="img-responsive" src={{ asset($event->img) }} alt="Events" />
+                            <!-- heading -->
+                            <h4><a href="#">{{ $event->title }}</a></h4>
+                            <!-- sub text -->
+                            <span class="sub-text">{{ $event->subtitle }}</span>
+                            <!-- paragraph -->
+                            <p>{{ $event->description }}</p>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-4 col-sm-4">
-                    <!-- event item -->
-                    <div class="event-item">
-                        <!-- image -->
-                        <img class="img-responsive" src="img/event/2.jpg" alt="Events" />
-                        <!-- heading -->
-                        <h4><a href="#">Dr. Dre on stage live</a></h4>
-                        <!-- sub text -->
-                        <span class="sub-text">Integrating technology and software solutions.</span>
-                        <!-- paragraph -->
-                        <p>It is our belief that in order to be most efficient it requires adaptive technology and
-                            software solutions.</p>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-4">
-                    <!-- event item -->
-                    <div class="event-item">
-                        <!-- image -->
-                        <img class="img-responsive" src="img/event/3.jpg" alt="Events" />
-                        <!-- heading -->
-                        <h4><a href="#">Macaroons live Party</a></h4>
-                        <!-- sub text -->
-                        <span class="sub-text">Integrating technology and software solutions.</span>
-                        <!-- paragraph -->
-                        <p>It is our belief that in order to be most efficient it requires adaptive technology and
-                            software solutions.</p>
-                    </div>
-                </div>
+                @endforeach
+            </div>
+            <div style="float: left; padding-left: 0px; padding-top: 20px;">
+                {{ $events->links() }}
             </div>
         </div>
     </div>
     <!-- events end -->
 
-    <!-- blog -->
+    {{-- <!-- blog -->
     <div class="blog" id="blog">
         <div class="container">
             <div class="default-heading">
@@ -148,7 +112,41 @@
             </div>
         </div>
     </div>
-    <!-- blog end -->
+    <!-- blog end --> --}}
+
+    <!-- our customer -->
+    <div class="team" id="customer">
+        <div class="container">
+            <div class="default-heading">
+                <!-- heading -->
+                <h2>Our Customers</h2>
+            </div>
+            <div class="row">
+                @foreach ($customers as $customer)
+                    <div class="col-md-3 col-sm-3">
+                        <!-- team member -->
+                        <div class="member">
+                            <!-- images -->
+                            <img class="img-responsive" src={{ asset($customer->img) }} alt="our customers" />
+                            <!-- heading -->
+                            <h3>{{ $customer->name }}</h3>
+                            <!-- designation -->
+                            <span class="dig">{{ $customer->description }}</span>
+                            <!-- email -->
+                            <a href="#">{{ $customer->emial }}</a>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+            <div style="float: left; padding-left: 0px; padding-top: 20px;">
+                {{-- {{ $customers->links() }} count {{ $customers->count() }} --}}
+                <a class="btn btn-primary" href={{ $customers->previousPageUrl() }}> prev </a>
+                <input type="text" style="width: 30px" value={{ $customers->currentPage() }}>
+                <a class="btn btn-primary" href={{ $customers->nextPageUrl() }}> next </a>
+            </div>
+        </div>
+    </div>
+    <!-- end our customer -->
 
     <!-- subscribe -->
     <div class="subscribe" id="subscribe">
@@ -174,61 +172,24 @@
         <div class="container">
             <div class="default-heading">
                 <!-- heading -->
-                <h2>Executing Team</h2>
+                <h2>Development Team</h2>
             </div>
             <div class="row">
-                <div class="col-md-3 col-sm-3">
-                    <!-- team member -->
-                    <div class="member">
-                        <!-- images -->
-                        <img class="img-responsive" src="img/team/1.jpg" alt="Team Member" />
-                        <!-- heading -->
-                        <h3>Adam Miser</h3>
-                        <!-- designation -->
-                        <span class="dig">CEO</span>
-                        <!-- email -->
-                        <a href="#">executive.member@bloger.com</a>
+                @foreach ($teams as $team)
+                    <div class="col-md-3 col-sm-3">
+                        <!-- team member -->
+                        <div class="member">
+                            <!-- images -->
+                            <img class="img-responsive" src={{ $team->img }} alt="Team Member" />
+                            <!-- heading -->
+                            <h3>{{ $team->name }}</h3>
+                            <!-- designation -->
+                            <span class="dig">{{ $team->role }}</span>
+                            <!-- email -->
+                            <a href="#">{{ $team->email }}</a>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-3 col-sm-3">
-                    <!-- team member -->
-                    <div class="member">
-                        <!-- images -->
-                        <img class="img-responsive" src="img/team/2.jpg" alt="Team Member" />
-                        <!-- heading -->
-                        <h3>Adam Miser</h3>
-                        <!-- designation -->
-                        <span class="dig">CEO</span>
-                        <!-- email -->
-                        <a href="#">executive.member@bloger.com</a>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-3">
-                    <!-- team member -->
-                    <div class="member">
-                        <!-- images -->
-                        <img class="img-responsive" src="img/team/1.jpg" alt="Team Member" />
-                        <!-- heading -->
-                        <h3>Adam Miser</h3>
-                        <!-- designation -->
-                        <span class="dig">CEO</span>
-                        <!-- email -->
-                        <a href="#">executive.member@bloger.com</a>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-3">
-                    <!-- team member -->
-                    <div class="member">
-                        <!-- images -->
-                        <img class="img-responsive" src="img/team/2.jpg" alt="Team Member" />
-                        <!-- heading -->
-                        <h3>Adam Miser</h3>
-                        <!-- designation -->
-                        <span class="dig">CEO</span>
-                        <!-- email -->
-                        <a href="#">executive.member@bloger.com</a>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </div>
